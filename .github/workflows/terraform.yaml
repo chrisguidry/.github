@@ -25,8 +25,7 @@ concurrency:
 
 env:
   # SETTINGS_TOKEN is a fine-grained token with Administration read and
-  # write, and Contents read, on every chrisguidry repository. The state
-  # keys are in the 1Password item "GitHub Settings State - chrisguidry".
+  # write, and Contents read, on every chrisguidry repository.
   GITHUB_TOKEN: ${{ secrets.SETTINGS_TOKEN }}
   GH_TOKEN: ${{ secrets.SETTINGS_TOKEN }}
   AWS_ACCESS_KEY_ID: ${{ secrets.STATE_ACCESS_KEY_ID }}

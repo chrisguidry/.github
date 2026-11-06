@@ -24,12 +24,11 @@ plan gives it no rulesets and no secret scanning.
 
 ## Applying
 
-The state is in a Linode Object Storage bucket, read with the key in the
-1Password item "GitHub Settings State - chrisguidry" (see `backend.tf`).
+The state is in a Linode Object Storage bucket (see `backend.tf`).
 
 ```
-export AWS_ACCESS_KEY_ID=…      # the item's username
-export AWS_SECRET_ACCESS_KEY=…  # the item's password
+export AWS_ACCESS_KEY_ID=…      # the bucket's access key ID
+export AWS_SECRET_ACCESS_KEY=…  # and its secret
 export GITHUB_TOKEN=$(gh auth token)
 terraform plan
 terraform apply
@@ -53,4 +52,4 @@ when either script finds a repository to change, which catches a setting changed
 unlisted repository, and an expired token.  The workflow's secrets are
 `SETTINGS_TOKEN`, a fine-grained token with Administration read and write
 and Contents read on every repository, and `STATE_ACCESS_KEY_ID` and
-`STATE_SECRET_ACCESS_KEY`, from the 1Password item.
+`STATE_SECRET_ACCESS_KEY`, the bucket's access key.
