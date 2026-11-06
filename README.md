@@ -20,9 +20,15 @@ plan gives it no rulesets and no secret scanning.
 
 ## Applying
 
+The state is in a Linode Object Storage bucket, read with the key in the
+1Password item "GitHub Settings State - chrisguidry" (see `backend.tf`).
+
 ```
-GITHUB_TOKEN=$(gh auth token) terraform plan
-GITHUB_TOKEN=$(gh auth token) terraform apply
+export AWS_ACCESS_KEY_ID=…      # the item's username
+export AWS_SECRET_ACCESS_KEY=…  # the item's password
+export GITHUB_TOKEN=$(gh auth token)
+terraform plan
+terraform apply
 ./code-scanning.sh          # report each repository whose CodeQL is off
 ./code-scanning.sh --apply  # and turn it on
 ```
