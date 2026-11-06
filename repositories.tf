@@ -1,7 +1,7 @@
 locals {
   repositories = {
     for name, options in yamldecode(file("${path.module}/repositories.yaml")) :
-    name => merge({ visibility = "public", discussions = false, tier = "push", extra_checks = [], code_scanning = "default" }, options)
+    name => merge({ visibility = "public", discussions = false, tier = "push", extra_checks = [] }, options)
   }
   public = { for name, repository in local.repositories : name => repository if repository.visibility == "public" }
 }

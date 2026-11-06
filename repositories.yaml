@@ -11,14 +11,8 @@
 #   extra_checks: [...]    Further status checks the pr tier requires,
 #                          for checks that come from outside GitHub
 #                          Actions and so cannot be among that job's needs.
-#   code_scanning: ...     How CodeQL scans the repository: default, the
-#                          standard, is GitHub's default setup, which
-#                          code-scanning.sh turns on; workflow is a CodeQL
-#                          workflow of the repository's own; none is no
-#                          scanning, for a repository with no code.
 
-chrisguidry:
-  code_scanning: none
+chrisguidry: {}
 
 docket:
   discussions: true
@@ -57,8 +51,7 @@ pytest-opentelemetry:
 
 redis-operator: {}
 
-transom:
-  code_scanning: workflow
+transom: {}
 
 uncalled-for:
   discussions: true
