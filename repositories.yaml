@@ -1,0 +1,67 @@
+# Every repository under github.com/chrisguidry that is neither a fork nor
+# archived, and what it sets beyond the standard in repositories.tf and
+# rulesets.tf. An entry of {} takes the standard as it is.
+#
+#   visibility: private    The repository is private. GitHub's Free plan
+#                          gives a private repository no rulesets and no
+#                          secret scanning, so it gets neither.
+#   discussions: true      GitHub Discussions are on.
+#   tier: pr               Changes reach main only through a pull request
+#                          whose "All checks passed" job succeeded.
+#   extra_checks: [...]    Further status checks the pr tier requires,
+#                          for checks that come from outside GitHub
+#                          Actions and so cannot be among that job's needs.
+#   code_scanning: ...     How CodeQL scans the repository: default, the
+#                          standard, is GitHub's default setup, which
+#                          code-scanning.sh turns on; workflow is a CodeQL
+#                          workflow of the repository's own; none is no
+#                          scanning, for a repository with no code.
+
+chrisguidry:
+  code_scanning: none
+
+docket:
+  discussions: true
+  tier: pr
+
+etrade-mcp: {}
+
+exercism: {}
+
+healthchecks-operator: {}
+
+measured:
+  tier: pr
+  extra_checks:
+    - docs/readthedocs.org:measured
+
+opentelemetry-container-distro: {}
+
+opentelemetry-resourcedetector-docker: {}
+
+opentelemetry-resourcedetector-kubernetes: {}
+
+opentelemetry-resourcedetector-process: {}
+
+paperless-mcp: {}
+
+pi-deepinfra: {}
+
+prometheus-mcp: {}
+
+public-sites:
+  visibility: private
+
+pytest-opentelemetry:
+  tier: pr
+
+redis-operator: {}
+
+transom:
+  code_scanning: workflow
+
+uncalled-for:
+  discussions: true
+  tier: pr
+
+you-need-an-mcp: {}
