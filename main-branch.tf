@@ -17,15 +17,13 @@ locals {
 }
 
 import {
-  for_each = { for name, id in local.adopted_rulesets : name => id if local.public[name].tier != "pr" }
+  for_each = local.adopted_rulesets
   to       = github_repository_ruleset.main[each.key]
   id       = "${each.key}:${each.value}"
 }
 
 resource "github_repository_ruleset" "main" {
-  # The pr tier waits on each repository's "All checks passed" job, and
-  # until it has one, its own ruleset stays as it is.
-  for_each = { for name, repository in local.public : name => repository if repository.tier != "pr" }
+  for_each = local.public
 
   name        = "main"
   repository  = github_repository.repository[each.key].name
