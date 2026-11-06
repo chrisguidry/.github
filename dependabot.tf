@@ -2,7 +2,7 @@
 # pull requests that update them.
 
 import {
-  for_each = local.repositories
+  for_each = local.existing
   to       = github_repository_vulnerability_alerts.alerts[each.key]
   id       = each.key
 }
@@ -15,7 +15,7 @@ resource "github_repository_vulnerability_alerts" "alerts" {
 }
 
 import {
-  for_each = local.repositories
+  for_each = local.existing
   to       = github_repository_dependabot_security_updates.updates[each.key]
   id       = each.key
 }

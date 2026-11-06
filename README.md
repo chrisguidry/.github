@@ -27,7 +27,7 @@ GITHUB_TOKEN=$(gh auth token) terraform apply
 ./code-scanning.sh --apply  # and turn it on
 ```
 
-The plan fails when GitHub has a repository that `repositories.yaml` does
-not list, so a new repository needs an entry before anything applies.
-Terraform adopts every repository by import, and it archives rather than
-deletes one dropped from the list.
+A new entry in `repositories.yaml` creates its repository.  An entry for
+a repository that already exists adopts it by import, and the plan fails
+when GitHub has a repository that the file does not list.  Terraform
+archives rather than deletes a repository dropped from the list.

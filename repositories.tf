@@ -4,12 +4,15 @@ locals {
     name => merge({ visibility = "public", discussions = false, tier = "push", extra_checks = [] }, options)
   }
   public = { for name, repository in local.repositories : name => repository if repository.visibility == "public" }
+
+  # The listed repositories that already exist on GitHub, which Terraform
+  # adopts. A listed repository that does not exist yet is created.
+  existing = { for name, repository in local.repositories : name => repository if contains(data.github_repositories.owned.names, name) }
 }
 
-# Every repository already exists, so each one is adopted, never created.
 # Terraform skips the import of a repository it already holds.
 import {
-  for_each = local.repositories
+  for_each = local.existing
   to       = github_repository.repository[each.key]
   id       = each.key
 }
@@ -52,6 +55,9 @@ resource "github_repository" "repository" {
     }
   }
 
+  # A new repository starts with one commit, so main exists for its ruleset.
+  auto_init = true
+
   # A repository dropped from repositories.yaml is archived, not deleted,
   # and prevent_destroy stops even that until someone removes this line.
   archive_on_destroy = true
@@ -60,12 +66,13 @@ resource "github_repository" "repository" {
     prevent_destroy = true
     # A repository's description, homepage, and topics are its own, edited
     # in GitHub, and its Pages site has a resource of its own.
-    ignore_changes = [description, homepage_url, topics, pages, has_downloads]
+    ignore_changes = [description, homepage_url, topics, pages, has_downloads, auto_init]
   }
 }
 
-# Every repository that is neither a fork nor archived must be listed, so a
-# new one fails the plan until it has an entry and takes the standard.
+# Every repository that is neither a fork nor archived must be listed, so one
+# made outside this file fails the plan until it has an entry and takes the
+# standard.
 data "github_repositories" "owned" {
   query = "user:chrisguidry fork:false archived:false"
 }
