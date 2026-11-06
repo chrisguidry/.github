@@ -6,20 +6,8 @@
 # passing means, and this ruleset never changes when its CI does.
 
 locals {
-  # The rulesets that predate this configuration, adopted in place.
-  adopted_rulesets = {
-    docket       = 3865298
-    uncalled-for = 13243149
-  }
-
   # The GitHub Actions app, so only a workflow can report the check.
   github_actions = 15368
-}
-
-import {
-  for_each = local.adopted_rulesets
-  to       = github_repository_ruleset.main[each.key]
-  id       = "${each.key}:${each.value}"
 }
 
 resource "github_repository_ruleset" "main" {
