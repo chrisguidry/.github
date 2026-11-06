@@ -12,6 +12,8 @@
 #                          for checks that come from outside GitHub
 #                          Actions and so cannot be among that job's needs.
 
+.github: {}
+
 chrisguidry: {}
 
 docket:
