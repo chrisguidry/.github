@@ -1,7 +1,7 @@
 # The state is the object chrisguidry.tfstate in a Linode Object Storage
-# bucket, which 44stonypoint's github/ module makes. Terraform reads the
-# bucket's access key from AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY. Linode speaks
-# S3 but is not AWS, so the checks that only AWS answers are skipped.
+# bucket. Terraform reads the bucket's access key from AWS_ACCESS_KEY_ID
+# and AWS_SECRET_ACCESS_KEY. Linode speaks S3 but is not AWS, so the
+# checks that only AWS answers are skipped.
 terraform {
   backend "s3" {
     bucket       = "guidry-github-settings-state"
