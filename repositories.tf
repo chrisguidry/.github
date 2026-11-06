@@ -85,3 +85,10 @@ resource "terraform_data" "every_repository_listed" {
     }
   }
 }
+
+# The public repositories, which code-scanning.sh and actions.sh read
+# after an apply to set what the provider has no resource for.
+output "public_repositories" {
+  description = "The public repositories, which code-scanning.sh and actions.sh check"
+  value       = sort(keys(local.public))
+}
