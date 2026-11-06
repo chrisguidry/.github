@@ -66,6 +66,10 @@ jobs:
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: ./code-scanning.sh
 
+      - name: Report forks' pull requests that run without approval
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: ./actions.sh
+
       - name: Apply
         if: github.event_name == 'push'
         run: terraform apply -input=false -auto-approve -lock-timeout=5m
@@ -73,3 +77,7 @@ jobs:
       - name: Turn on CodeQL that is off
         if: github.event_name == 'push'
         run: ./code-scanning.sh --apply
+
+      - name: Require approval for forks' pull requests
+        if: github.event_name == 'push'
+        run: ./actions.sh --apply
