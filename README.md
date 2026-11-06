@@ -37,3 +37,13 @@ A new entry in `repositories.yaml` creates its repository.  An entry for
 a repository that already exists adopts it by import, and the plan fails
 when GitHub has a repository that the file does not list.  Terraform
 archives rather than deletes a repository dropped from the list.
+
+## CI
+
+A pull request plans, and a push to main applies and turns on any CodeQL
+that is off.  A daily run fails when its plan has any change in it or
+CodeQL is off anywhere, which catches a setting changed by hand, an
+unlisted repository, and an expired token.  The workflow's secrets are
+`SETTINGS_TOKEN`, a fine-grained token with Administration read and write
+and Contents read on every repository, and `STATE_ACCESS_KEY_ID` and
+`STATE_SECRET_ACCESS_KEY`, from the 1Password item.
