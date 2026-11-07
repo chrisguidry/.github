@@ -22,8 +22,6 @@ docket:
 
 etrade-mcp: {}
 
-exercism: {}
-
 healthchecks-operator: {}
 
 measured:
