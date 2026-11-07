@@ -43,9 +43,6 @@ pi-deepinfra: {}
 
 prometheus-mcp: {}
 
-public-sites:
-  visibility: private
-
 pytest-opentelemetry:
   tier: pr
 
