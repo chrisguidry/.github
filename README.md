@@ -19,6 +19,10 @@ each one sets beyond the standard.  The standard is:
   repository in the `pr` tier also takes changes only through a pull
   request whose `All checks passed` job succeeded.
 
+[`images/`](images/README.md) holds the standard for a repository that
+publishes a container image: the OCI keys it writes, and the bake file
+that writes them.
+
 A private repository gets the merge settings only, since GitHub's Free
 plan gives it no rulesets and no secret scanning.
 
