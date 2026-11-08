@@ -24,7 +24,7 @@ the image is ours.  No Dockerfile has a `LABEL` or `MAINTAINER` line.
 | `version` | The version the workflow tags the image with, from CI |
 | `created` | The commit's committer time in RFC 3339, `git log -1 --format=%cI` |
 | `url` | The docs site, or the repository's page |
-| `licenses` | The SPDX expression of the repository's LICENSE, or `""` when there is none |
+| `licenses` | The SPDX expression of the repository's LICENSE. A project of mine with no LICENSE gets the MIT license first |
 | `vendor` | `Chris Guidry` |
 | `title` | The image's name |
 | `description` | One line saying what the image is |
