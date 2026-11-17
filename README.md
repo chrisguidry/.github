@@ -18,8 +18,8 @@ each one sets beyond the standard.  The standard is:
 - main keeps a linear history that no one force-pushes or deletes.  A
   repository in the `pr` tier also takes changes only through a pull
   request whose `All checks passed` job succeeded.
-- Only the repository's admins and GitHub Actions create, move, or delete
-  a tag.
+- Only the repository's admins create, move, or delete a tag.  A
+  repository with `workflow_tags` lets a workflow create one too.
 - Private vulnerability reporting is on, so a stranger can report a
   vulnerability to the owner alone.
 
