@@ -67,6 +67,7 @@ redis-operator:
   tier: checks
 
 transom:
+  tier: checks
   workflow_tags: true
 
 uncalled-for:
