@@ -86,6 +86,10 @@ jobs:
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: ./actions.sh
 
+      - name: Report private vulnerability reporting that is off
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: ./vulnerability-reporting.sh
+
       - name: Apply
         if: github.event_name == 'push'
         run: terraform apply -input=false -auto-approve -lock-timeout=5m
@@ -97,3 +101,7 @@ jobs:
       - name: Require approval for forks' pull requests
         if: github.event_name == 'push'
         run: ./actions.sh --apply
+
+      - name: Turn on private vulnerability reporting
+        if: github.event_name == 'push'
+        run: ./vulnerability-reporting.sh --apply
