@@ -18,6 +18,10 @@ each one sets beyond the standard.  The standard is:
 - main keeps a linear history that no one force-pushes or deletes.  A
   repository in the `pr` tier also takes changes only through a pull
   request whose `All checks passed` job succeeded.
+- Only the repository's admins and GitHub Actions create, move, or delete
+  a tag.
+- Private vulnerability reporting is on, so a stranger can report a
+  vulnerability to the owner alone.
 
 [`images/`](images/README.md) holds the standard for a repository that
 publishes a container image: the OCI keys it writes, and the bake file
@@ -40,6 +44,8 @@ terraform apply
 ./code-scanning.sh --apply  # and turn it on
 ./actions.sh                # report each repository whose forks' pull requests run without approval
 ./actions.sh --apply        # and require it
+./vulnerability-reporting.sh          # report each repository whose private vulnerability reporting is off
+./vulnerability-reporting.sh --apply  # and turn it on
 ```
 
 A new entry in `repositories.yaml` creates its repository.  An entry for
@@ -50,9 +56,10 @@ archives rather than deletes a repository dropped from the list.
 ## CI
 
 A pull request plans, and a push to main applies, turns on any CodeQL
-that is off, and requires approval for forks' pull requests where it is
-not required.  A daily run fails when its plan has any change in it, or
-when either script finds a repository to change, which catches a setting changed by hand, an
+that is off, requires approval for forks' pull requests where it is
+not required, and turns on private vulnerability reporting where it is
+off.  A daily run fails when its plan has any change in it, or
+when any of the scripts finds a repository to change, which catches a setting changed by hand, an
 unlisted repository, and a GitHub App key that stopped working.
 
 The workflow acts as the `chrisguidry-settings` GitHub App, which the
