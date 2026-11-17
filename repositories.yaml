@@ -28,34 +28,43 @@ docket:
   discussions: true
   tier: pr
 
-etrade-mcp: {}
+etrade-mcp:
+  tier: checks
 
-healthchecks-operator: {}
+healthchecks-operator:
+  tier: checks
 
 measured:
   tier: pr
   extra_checks:
     - docs/readthedocs.org:measured
 
-opentelemetry-container-distro: {}
+opentelemetry-container-distro:
+  tier: checks
 
-opentelemetry-resourcedetector-docker: {}
+opentelemetry-resourcedetector-docker:
+  tier: checks
 
-opentelemetry-resourcedetector-kubernetes: {}
+opentelemetry-resourcedetector-kubernetes:
+  tier: checks
 
-opentelemetry-resourcedetector-process: {}
+opentelemetry-resourcedetector-process:
+  tier: checks
 
-paperless-mcp: {}
+paperless-mcp:
+  tier: checks
 
 pi-deepinfra:
   tier: checks
 
-prometheus-mcp: {}
+prometheus-mcp:
+  tier: checks
 
 pytest-opentelemetry:
   tier: pr
 
-redis-operator: {}
+redis-operator:
+  tier: checks
 
 transom:
   workflow_tags: true
@@ -64,4 +73,5 @@ uncalled-for:
   discussions: true
   tier: pr
 
-you-need-an-mcp: {}
+you-need-an-mcp:
+  tier: checks
