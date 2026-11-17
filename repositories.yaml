@@ -11,6 +11,10 @@
 #   extra_checks: [...]    Further status checks the pr tier requires,
 #                          for checks that come from outside GitHub
 #                          Actions and so cannot be among that job's needs.
+#   workflow_tags: true    A workflow creates the repository's release
+#                          tags with its own token, so anyone who can push
+#                          may create a tag. Moving and deleting one stay
+#                          with the admins.
 
 .github: {}
 
@@ -48,7 +52,8 @@ pytest-opentelemetry:
 
 redis-operator: {}
 
-transom: {}
+transom:
+  workflow_tags: true
 
 uncalled-for:
   discussions: true
