@@ -8,6 +8,10 @@
 #   discussions: true      GitHub Discussions are on.
 #   tier: pr               Changes reach main only through a pull request
 #                          whose "All checks passed" job succeeded.
+#   tier: checks           The admins push to main as in the standard.
+#                          Anything else reaches main only on a commit
+#                          whose "All checks passed" job succeeded, so
+#                          GitHub's auto-merge waits for CI.
 #   extra_checks: [...]    Further status checks the pr tier requires,
 #                          for checks that come from outside GitHub
 #                          Actions and so cannot be among that job's needs.
@@ -43,7 +47,8 @@ opentelemetry-resourcedetector-process: {}
 
 paperless-mcp: {}
 
-pi-deepinfra: {}
+pi-deepinfra:
+  tier: checks
 
 prometheus-mcp: {}
 

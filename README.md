@@ -17,7 +17,9 @@ each one sets beyond the standard.  The standard is:
   workflows run.
 - main keeps a linear history that no one force-pushes or deletes.  A
   repository in the `pr` tier also takes changes only through a pull
-  request whose `All checks passed` job succeeded.
+  request whose `All checks passed` job succeeded.  A repository in the
+  `checks` tier requires that job of everything but an admin's own push,
+  so that auto-merge waits for CI.
 - Only the repository's admins create, move, or delete a tag.  A
   repository with `workflow_tags` lets a workflow create one too.
 - Private vulnerability reporting is on, so a stranger can report a
