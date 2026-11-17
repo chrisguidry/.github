@@ -3,8 +3,8 @@ name: Terraform
 # A pull request plans, so its changes to the repositories' settings are
 # read before they merge, and a push to main applies them. Each day a plan
 # with no changes in it passes, and a plan with any fails, so a setting
-# changed by hand, a repository that repositories.yaml does not list, or an
-# expired token says so.
+# changed by hand, a repository that repositories.yaml does not list, or a
+# GitHub App key that stopped working says so.
 
 on:
   pull_request:
@@ -24,10 +24,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # SETTINGS_TOKEN is a fine-grained token with Administration read and
-  # write, and Contents read, on every chrisguidry repository.
-  GITHUB_TOKEN: ${{ secrets.SETTINGS_TOKEN }}
-  GH_TOKEN: ${{ secrets.SETTINGS_TOKEN }}
   AWS_ACCESS_KEY_ID: ${{ secrets.STATE_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.STATE_SECRET_ACCESS_KEY }}
   TF_IN_AUTOMATION: "true"
@@ -41,6 +37,27 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+
+      # The settings need Administration, which the workflow's own token
+      # cannot carry. The chrisguidry-settings GitHub App has it, with
+      # Contents read, on every chrisguidry repository.
+      # This step makes a token of the App's that lasts an hour.
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: settings-token
+        with:
+          client-id: ${{ vars.SETTINGS_APP_CLIENT_ID }}
+          private-key: ${{ secrets.SETTINGS_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          permission-administration: write
+          permission-contents: read
+
+      # Terraform's provider reads GITHUB_TOKEN, and gh reads GH_TOKEN.
+      - name: Give the token to Terraform and gh
+        env:
+          TOKEN: ${{ steps.settings-token.outputs.token }}
+        run: |
+          echo "GITHUB_TOKEN=$TOKEN" >> "$GITHUB_ENV"
+          echo "GH_TOKEN=$TOKEN" >> "$GITHUB_ENV"
 
       - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:

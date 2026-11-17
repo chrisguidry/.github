@@ -53,7 +53,14 @@ A pull request plans, and a push to main applies, turns on any CodeQL
 that is off, and requires approval for forks' pull requests where it is
 not required.  A daily run fails when its plan has any change in it, or
 when either script finds a repository to change, which catches a setting changed by hand, an
-unlisted repository, and an expired token.  The workflow's secrets are
-`SETTINGS_TOKEN`, a fine-grained token with Administration read and write
-and Contents read on every repository, and `STATE_ACCESS_KEY_ID` and
+unlisted repository, and a GitHub App key that stopped working.
+
+The workflow acts as the `chrisguidry-settings` GitHub App, which the
+account owns and has installed on every repository, with Administration
+read and write and Contents read.  Each run makes a token of the App's
+that lasts an hour, from the App's client ID in the variable
+`SETTINGS_APP_CLIENT_ID` and its private key in the secret
+`SETTINGS_APP_PRIVATE_KEY`.  The key does not expire.  To replace it,
+generate a second key on the App's page, set the secret to it, and delete
+the first.  The other secrets are `STATE_ACCESS_KEY_ID` and
 `STATE_SECRET_ACCESS_KEY`, the bucket's access key.
