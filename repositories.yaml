@@ -27,6 +27,12 @@
 #                          Dependabot leaves alone. Each ignored
 #                          dependency gives a reason, and may give the
 #                          versions that the reason covers.
+#                          A uv entry also sets project. For a
+#                          library, Dependabot updates only uv.lock, so
+#                          the requirements in pyproject.toml stay as
+#                          low as the library supports. For an
+#                          application, it raises each requirement to
+#                          the version it locks.
 #   dependabot: false      The repository has no workflows and no
 #                          dependencies, so it gets no dependabot.yml.
 #                          Dependabot fails a github-actions update that
@@ -44,6 +50,7 @@ docket:
   tier: pr
   dependabot:
     - ecosystem: uv
+      project: library
     - ecosystem: cargo
       directories: [/rust]
 
@@ -51,6 +58,7 @@ etrade-mcp:
   tier: checks
   dependabot:
     - ecosystem: uv
+      project: application
 
 healthchecks-operator:
   tier: checks
@@ -64,6 +72,7 @@ measured:
     - docs/readthedocs.org:measured
   dependabot:
     - ecosystem: uv
+      project: library
       ignore:
         - dependency: pytest-cov
           versions: [">=7"]
@@ -82,26 +91,31 @@ opentelemetry-container-distro:
   tier: checks
   dependabot:
     - ecosystem: uv
+      project: library
 
 opentelemetry-resourcedetector-docker:
   tier: checks
   dependabot:
     - ecosystem: uv
+      project: library
 
 opentelemetry-resourcedetector-kubernetes:
   tier: checks
   dependabot:
     - ecosystem: uv
+      project: library
 
 opentelemetry-resourcedetector-process:
   tier: checks
   dependabot:
     - ecosystem: uv
+      project: library
 
 paperless-mcp:
   tier: checks
   dependabot:
     - ecosystem: uv
+      project: application
     - ecosystem: docker
 
 pi-deepinfra:
@@ -113,12 +127,14 @@ prometheus-mcp:
   tier: checks
   dependabot:
     - ecosystem: uv
+      project: application
     - ecosystem: docker
 
 pytest-opentelemetry:
   tier: pr
   dependabot:
     - ecosystem: uv
+      project: library
 
 redis-operator:
   tier: checks
@@ -148,9 +164,11 @@ uncalled-for:
   tier: pr
   dependabot:
     - ecosystem: uv
+      project: library
 
 you-need-an-mcp:
   tier: checks
   dependabot:
     - ecosystem: uv
+      project: application
     - ecosystem: docker

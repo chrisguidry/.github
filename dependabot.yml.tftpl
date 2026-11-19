@@ -16,6 +16,20 @@ updates:
     groups:
       ${update.ecosystem}:
         patterns: ["*"]
+%{ if update.versioning != null ~}
+    # Without this, Dependabot updates only the packages that
+    # pyproject.toml names, and the rest of uv.lock goes stale.
+    allow:
+      - dependency-type: all
+%{ if update.versioning == "lockfile-only" ~}
+    # This project is a library, so only uv.lock moves, and the
+    # requirements in pyproject.toml stay as low as it supports.
+%{ else ~}
+    # This project is an application, so each requirement in
+    # pyproject.toml rises to the version that uv.lock holds.
+%{ endif ~}
+    versioning-strategy: ${update.versioning}
+%{ endif ~}
 %{ if length(update.ignore) > 0 ~}
     ignore:
 %{ for ignored in update.ignore ~}
