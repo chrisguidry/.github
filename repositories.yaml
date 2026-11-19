@@ -19,60 +19,127 @@
 #                          tags with its own token, so anyone who can push
 #                          may create a tag. Moving and deleting one stay
 #                          with the admins.
+#   dependabot: [...]      The package ecosystems that Dependabot updates,
+#                          besides github-actions, which every repository
+#                          gets. Each entry names an ecosystem, and may
+#                          set directories, which default to the root,
+#                          and ignore, a list of dependencies that
+#                          Dependabot leaves alone. Each ignored
+#                          dependency gives a reason, and may give the
+#                          versions that the reason covers.
 
-.github: {}
+.github:
+  dependabot:
+    - ecosystem: terraform
 
 chrisguidry: {}
 
 docket:
   discussions: true
   tier: pr
+  dependabot:
+    - ecosystem: uv
+    - ecosystem: cargo
+      directories: [/rust]
 
 etrade-mcp:
   tier: checks
+  dependabot:
+    - ecosystem: uv
 
 healthchecks-operator:
   tier: checks
+  dependabot:
+    - ecosystem: gomod
+    - ecosystem: docker
 
 measured:
   tier: pr
   extra_checks:
     - docs/readthedocs.org:measured
+  dependabot:
+    - ecosystem: uv
+      ignore:
+        - dependency: pytest-cov
+          versions: [">=7"]
+          reason: |-
+            pytest-cov 7 starts measuring after the pytest11 entry point
+            has imported measured, so coverage misses every module-level
+            line.
 
 opentelemetry-container-distro:
   tier: checks
+  dependabot:
+    - ecosystem: uv
 
 opentelemetry-resourcedetector-docker:
   tier: checks
+  dependabot:
+    - ecosystem: uv
 
 opentelemetry-resourcedetector-kubernetes:
   tier: checks
+  dependabot:
+    - ecosystem: uv
 
 opentelemetry-resourcedetector-process:
   tier: checks
+  dependabot:
+    - ecosystem: uv
 
 paperless-mcp:
   tier: checks
+  dependabot:
+    - ecosystem: uv
+    - ecosystem: docker
 
 pi-deepinfra:
   tier: checks
+  dependabot:
+    - ecosystem: npm
 
 prometheus-mcp:
   tier: checks
+  dependabot:
+    - ecosystem: uv
+    - ecosystem: docker
 
 pytest-opentelemetry:
   tier: pr
+  dependabot:
+    - ecosystem: uv
 
 redis-operator:
   tier: checks
+  dependabot:
+    - ecosystem: gomod
+    - ecosystem: docker
 
 transom:
   tier: checks
   workflow_tags: true
+  dependabot:
+    - ecosystem: cargo
+    - ecosystem: docker
+      directories: [/server, /gateway]
+    - ecosystem: terraform
+      directories: [/gateway, /site]
+    - ecosystem: gradle
+      directories: [/android]
+      ignore:
+        - dependency: org.robolectric:android-all-instrumented
+          reason: |-
+            Robolectric runs only the framework jar its own release
+            names, so this moves when Robolectric does, by hand.
 
 uncalled-for:
   discussions: true
   tier: pr
+  dependabot:
+    - ecosystem: uv
 
 you-need-an-mcp:
   tier: checks
+  dependabot:
+    - ecosystem: uv
+    - ecosystem: docker

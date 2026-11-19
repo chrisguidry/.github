@@ -1,0 +1,31 @@
+# Terraform writes this file from github.com/chrisguidry/.github, and
+# writes it again over any change made here. To change it, edit this
+# repository's entry in repositories.yaml there.
+
+version: 2
+updates:
+%{ for update in updates ~}
+  - package-ecosystem: ${update.ecosystem}
+    directories: ${jsonencode(update.directories)}
+    schedule:
+      interval: weekly
+    # A release has a week to be found bad and yanked before it lands here.
+    cooldown:
+      default-days: 7
+    # One pull request a week carries every update of this ecosystem.
+    groups:
+      ${update.ecosystem}:
+        patterns: ["*"]
+%{ if length(update.ignore) > 0 ~}
+    ignore:
+%{ for ignored in update.ignore ~}
+%{ for line in split("\n", ignored.reason) ~}
+      # ${line}
+%{ endfor ~}
+      - dependency-name: ${jsonencode(ignored.dependency)}
+%{ if ignored.versions != null ~}
+        versions: ${replace(replace(jsonencode(ignored.versions), "\\u003e", ">"), "\\u003c", "<")}
+%{ endif ~}
+%{ endfor ~}
+%{ endif ~}
+%{ endfor ~}
