@@ -27,6 +27,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.STATE_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.STATE_SECRET_ACCESS_KEY }}
   TF_IN_AUTOMATION: "true"
+  TF_VAR_settings_app_id: ${{ vars.SETTINGS_APP_ID }}
 
 jobs:
   terraform:
@@ -40,8 +41,8 @@ jobs:
 
       # The settings need Administration, which the workflow's own token
       # cannot carry. The chrisguidry-settings GitHub App has it, with
-      # Contents read, and Issues write for the labels, on every
-      # chrisguidry repository.
+      # Contents write for each repository's dependabot.yml, and Issues
+      # write for the labels, on every chrisguidry repository.
       # This step makes a token of the App's that lasts an hour.
       - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         id: settings-token
@@ -50,7 +51,7 @@ jobs:
           private-key: ${{ secrets.SETTINGS_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           permission-administration: write
-          permission-contents: read
+          permission-contents: write
           permission-issues: write
 
       # Terraform's provider reads GITHUB_TOKEN, and gh reads GH_TOKEN.

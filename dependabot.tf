@@ -1,5 +1,6 @@
-# Dependabot alerts on every repository's vulnerable dependencies, and the
-# pull requests that update them.
+# Dependabot alerts on every repository's vulnerable dependencies, the
+# pull requests that update them, and the .github/dependabot.yml that
+# keeps the rest of its dependencies current.
 
 import {
   for_each = local.existing
@@ -25,4 +26,44 @@ resource "github_repository_dependabot_security_updates" "updates" {
 
   repository = github_repository_vulnerability_alerts.alerts[each.key].repository
   enabled    = true
+}
+
+# Each repository's .github/dependabot.yml comes from one template, so
+# every repository updates on the same schedule with the same grouping and
+# the same wait after a release. A repository's entry in repositories.yaml
+# names only its ecosystems and what it ignores.
+locals {
+  dependabot_updates = {
+    for name, repository in local.repositories : name => concat(
+      [{ ecosystem = "github-actions", directories = ["/"], ignore = [] }],
+      [
+        for update in repository.dependabot : {
+          ecosystem   = update.ecosystem
+          directories = try(update.directories, ["/"])
+          ignore = [
+            for ignored in try(update.ignore, []) : {
+              dependency = ignored.dependency
+              versions   = try(ignored.versions, null)
+              reason     = ignored.reason
+            }
+          ]
+        }
+      ],
+    )
+  }
+}
+
+# The commit goes straight to main as the chrisguidry-settings GitHub App,
+# which the main checks ruleset lets through, so that ruleset comes first.
+# The file replaces one that the repository already has.
+resource "github_repository_file" "dependabot" {
+  for_each = local.repositories
+
+  repository          = github_repository.repository[each.key].name
+  file                = ".github/dependabot.yml"
+  content             = templatefile("${path.module}/dependabot.yml.tftpl", { updates = local.dependabot_updates[each.key] })
+  commit_message      = "Write dependabot.yml from chrisguidry/.github"
+  overwrite_on_create = true
+
+  depends_on = [github_repository_ruleset.main, github_repository_ruleset.main_checks]
 }

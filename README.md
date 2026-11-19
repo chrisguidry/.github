@@ -8,6 +8,10 @@ each one sets beyond the standard.  The standard is:
 
 - Pull requests merge by squash, titled and described by the pull request,
   or by rebase, and never with a merge commit.  A merged branch is deleted.
+- Dependabot opens one pull request a week for each package ecosystem
+  the repository lists, and for its GitHub Actions, with every update
+  that is at least a week old.  Terraform writes the repository's
+  `.github/dependabot.yml`, and writes it again over a change made there.
 - Dependabot alerts and security updates, secret scanning, and push
   protection are on.  CodeQL's default setup is on, unless the repository
   runs CodeQL from a workflow of its own.
@@ -43,6 +47,7 @@ The state is in a Linode Object Storage bucket (see `backend.tf`).
 export AWS_ACCESS_KEY_ID=…      # the bucket's access key ID
 export AWS_SECRET_ACCESS_KEY=…  # and its secret
 export GITHUB_TOKEN=$(gh auth token)
+export TF_VAR_settings_app_id=…  # the chrisguidry-settings App's ID
 terraform plan
 terraform apply
 ./code-scanning.sh          # report each repository whose CodeQL is off
@@ -69,8 +74,10 @@ unlisted repository, and a GitHub App key that stopped working.
 
 The workflow acts as the `chrisguidry-settings` GitHub App, which the
 account owns and has installed on every repository, with Administration
-read and write, Issues read and write for the labels, and Contents
-read.  Each run makes a token of the App's that lasts an hour, with
+read and write, Issues read and write for the labels, and Contents read
+and write for each repository's `dependabot.yml`.  The App's ID is in the
+variable `SETTINGS_APP_ID`, and the `main checks` rulesets let that App
+commit to main.  Each run makes a token of the App's that lasts an hour, with
 those permissions and no others, from the App's client ID in the variable
 `SETTINGS_APP_CLIENT_ID` and its private key in the secret
 `SETTINGS_APP_PRIVATE_KEY`.  The key does not expire.  To replace it,
