@@ -31,7 +31,8 @@ resource "github_repository_dependabot_security_updates" "updates" {
 # Each repository's .github/dependabot.yml comes from one template, so
 # every repository updates on the same schedule with the same grouping and
 # the same wait after a release. A repository's entry in repositories.yaml
-# names only its ecosystems and what it ignores.
+# names only its ecosystems and what it ignores. A repository with
+# dependabot: false gets no file.
 locals {
   dependabot_updates = {
     for name, repository in local.repositories : name => concat(
@@ -49,7 +50,7 @@ locals {
           ]
         }
       ],
-    )
+    ) if repository.dependabot != false
   }
 }
 
@@ -57,7 +58,7 @@ locals {
 # which the main checks ruleset lets through, so that ruleset comes first.
 # The file replaces one that the repository already has.
 resource "github_repository_file" "dependabot" {
-  for_each = local.repositories
+  for_each = local.dependabot_updates
 
   repository          = github_repository.repository[each.key].name
   file                = ".github/dependabot.yml"

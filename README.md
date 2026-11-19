@@ -12,6 +12,7 @@ each one sets beyond the standard.  The standard is:
   the repository lists, and for its GitHub Actions, with every update
   that is at least a week old.  Terraform writes the repository's
   `.github/dependabot.yml`, and writes it again over a change made there.
+  A repository with no workflows and no dependencies gets no file.
 - Dependabot alerts and security updates, secret scanning, and push
   protection are on.  CodeQL's default setup is on, unless the repository
   runs CodeQL from a workflow of its own.
