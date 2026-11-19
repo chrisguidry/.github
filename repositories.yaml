@@ -71,6 +71,12 @@ measured:
             pytest-cov 7 starts measuring after the pytest11 entry point
             has imported measured, so coverage misses every module-level
             line.
+        - dependency: pymdown-extensions
+          versions: [">=13"]
+          reason: |-
+            measured caps pymdown-extensions below 13 for its docs
+            build, and 13 needs Python 3.11.5 where measured supports
+            3.11, so an update to it does not resolve.
 
 opentelemetry-container-distro:
   tier: checks
