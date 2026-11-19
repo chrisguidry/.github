@@ -69,8 +69,9 @@ unlisted repository, and a GitHub App key that stopped working.
 
 The workflow acts as the `chrisguidry-settings` GitHub App, which the
 account owns and has installed on every repository, with Administration
-read and write and Contents read.  Each run makes a token of the App's
-that lasts an hour, from the App's client ID in the variable
+read and write, Issues read and write for the labels, and Contents
+read.  Each run makes a token of the App's that lasts an hour, with
+those permissions and no others, from the App's client ID in the variable
 `SETTINGS_APP_CLIENT_ID` and its private key in the secret
 `SETTINGS_APP_PRIVATE_KEY`.  The key does not expire.  To replace it,
 generate a second key on the App's page, set the secret to it, and delete

@@ -40,7 +40,8 @@ jobs:
 
       # The settings need Administration, which the workflow's own token
       # cannot carry. The chrisguidry-settings GitHub App has it, with
-      # Contents read, on every chrisguidry repository.
+      # Contents read, and Issues write for the labels, on every
+      # chrisguidry repository.
       # This step makes a token of the App's that lasts an hour.
       - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         id: settings-token
@@ -50,6 +51,7 @@ jobs:
           owner: ${{ github.repository_owner }}
           permission-administration: write
           permission-contents: read
+          permission-issues: write
 
       # Terraform's provider reads GITHUB_TOKEN, and gh reads GH_TOKEN.
       - name: Give the token to Terraform and gh
