@@ -15,6 +15,9 @@ each one sets beyond the standard.  The standard is:
   more, and no workflow approves a pull request.  A pull request from a
   fork by someone who has never contributed waits for approval before its
   workflows run.
+- Every repository has a `simmer` label.  The owner adds it to an issue or
+  a pull request to hand that thread to the `chrisguidry-simmer` GitHub
+  App's triage, and only the owner's use of it does anything.
 - main keeps a linear history that no one force-pushes or deletes.  A
   repository in the `pr` tier also takes changes only through a pull
   request whose `All checks passed` job succeeded.  A repository in the
