@@ -27,12 +27,17 @@
 #                          Dependabot leaves alone. Each ignored
 #                          dependency gives a reason, and may give the
 #                          versions that the reason covers.
+#   dependabot: false      The repository has no workflows and no
+#                          dependencies, so it gets no dependabot.yml.
+#                          Dependabot fails a github-actions update that
+#                          finds no workflow.
 
 .github:
   dependabot:
     - ecosystem: terraform
 
-chrisguidry: {}
+chrisguidry:
+  dependabot: false
 
 docket:
   discussions: true
