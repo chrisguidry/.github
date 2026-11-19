@@ -33,14 +33,28 @@ resource "github_repository_dependabot_security_updates" "updates" {
 # the same wait after a release. A repository's entry in repositories.yaml
 # names only its ecosystems and what it ignores. A repository with
 # dependabot: false gets no file.
+#
+# A uv entry must also say whether the project is a library or an
+# application, because Dependabot's own guess raises a library's
+# requirements. Whoever installs a library resolves its requirements
+# against their own, so each one stays as low as the library supports,
+# and only uv.lock moves. Nobody resolves against an application, so its
+# requirements follow the versions it is tested with. A uv entry with no
+# project, or an unknown one, fails the plan.
 locals {
+  uv_versioning = {
+    library     = "lockfile-only"
+    application = "increase"
+  }
+
   dependabot_updates = {
     for name, repository in local.repositories : name => concat(
-      [{ ecosystem = "github-actions", directories = ["/"], ignore = [] }],
+      [{ ecosystem = "github-actions", directories = ["/"], versioning = null, ignore = [] }],
       [
         for update in repository.dependabot : {
           ecosystem   = update.ecosystem
           directories = try(update.directories, ["/"])
+          versioning  = update.ecosystem == "uv" ? local.uv_versioning[update.project] : null
           ignore = [
             for ignored in try(update.ignore, []) : {
               dependency = ignored.dependency
