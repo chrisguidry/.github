@@ -41,8 +41,12 @@ jobs:
 
       # The settings need Administration, which the workflow's own token
       # cannot carry. The chrisguidry-settings GitHub App has it, with
-      # Contents write for each repository's dependabot.yml, and Issues
-      # write for the labels, on every chrisguidry repository.
+      # Repository creation for new entries, Contents write for each
+      # repository's dependabot.yml, and Issues write for the labels, on
+      # every chrisguidry repository. The step asks for no permissions by
+      # name, so the token carries all of the App's: the action has no
+      # input for Repository creation, and a token limited to named
+      # permissions cannot create a repository.
       # This step makes a token of the App's that lasts an hour.
       - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         id: settings-token
@@ -50,9 +54,6 @@ jobs:
           client-id: ${{ vars.SETTINGS_APP_CLIENT_ID }}
           private-key: ${{ secrets.SETTINGS_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          permission-administration: write
-          permission-contents: write
-          permission-issues: write
 
       # Terraform's provider reads GITHUB_TOKEN, and gh reads GH_TOKEN.
       - name: Give the token to Terraform and gh
