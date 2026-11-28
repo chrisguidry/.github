@@ -48,7 +48,7 @@ jobs:
       # input for Repository creation, and a token limited to named
       # permissions cannot create a repository.
       # This step makes a token of the App's that lasts an hour.
-      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+      - uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
         id: settings-token
         with:
           client-id: ${{ vars.SETTINGS_APP_CLIENT_ID }}
