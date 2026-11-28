@@ -66,6 +66,12 @@ healthchecks-operator:
     - ecosystem: gomod
     - ecosystem: docker
 
+knock:
+  tier: checks
+  dependabot:
+    - ecosystem: gomod
+    - ecosystem: docker
+
 measured:
   tier: pr
   extra_checks:
