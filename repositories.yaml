@@ -148,6 +148,9 @@ redis-operator:
     - ecosystem: gomod
     - ecosystem: docker
 
+settings-create-test:
+  dependabot: false
+
 transom:
   tier: checks
   workflow_tags: true
